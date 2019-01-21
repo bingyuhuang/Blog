@@ -80,3 +80,9 @@ theme: next
 deploy:
   type: git
   repo: https://__GITHUB_TOKEN__@github.com/bingyuhuang/bingyuhuang.github.io.git
+
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
