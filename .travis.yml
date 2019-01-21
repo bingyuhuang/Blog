@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+- 10.15.0
+branches:
+  only:
+  - master
+
+install: npm install
+
+notifications:
+  email:
+    recipients:
+      - huangbingyu2018@gmail.com
+    on_success: change
+    on_failure: always
+
+before_script:
+- git config --global user.name "sherlockblaze"
+- git config --global user.email "sherlockblaze@github.com"
+- sed -i "s/__GITHUB_TOKEN__/${__GITHUB_TOKEN__}/" _config.yml
+
+script: npm run build
