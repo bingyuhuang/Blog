@@ -154,7 +154,7 @@ links:
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.gif
 # in site  directory(source/uploads): /uploads/avatar.gif
-avatar: /images/DogFace.jpg
+avatar: /images/pig.jpeg
 
 # Table Of Contents in the Sidebar
 toc:
