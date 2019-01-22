@@ -3,7 +3,7 @@
 title: "Raft一致性算法"
 catalog: true
 toc_nav_num: true
-date: 2017-09-18 10:51:24
+date: 2019-01-23 12:49:24
 subtitle: "etcd核心思想"
 header-img: "/img/header_img/archive-bg.png"
 tags:
