@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Change YourSelf!
+title: 
 subtitle: 
 author: Beauty Catty
 language:
@@ -19,7 +19,7 @@ permalink_defaults:
 #Custom Setting Start
 
 # Site settings
-SEOTitle: Beantech
+SEOTitle: beautycatty | Blog
 email: 
 description: ""
 keyword: ""
