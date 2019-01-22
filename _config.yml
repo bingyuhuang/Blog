@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Beauty Catty's Blog
+title: Beauty Catty
 subtitle: Never underestimate your power to change yourself!
 author: Beauty Catty
 language:
@@ -61,7 +61,7 @@ ga_domain: yoursite
 
 # Sidebar settings
 sidebar: true                       # whether or not using Sidebar.
-sidebar-about-description: "Change yourself!"
+sidebar-about-description: "Beauty Catty's Blog"
 sidebar-avatar: img/clock.jpeg      # use absolute URL, seeing it's used in both `/` and `/about/`
 widgets:
 - featured-tags
@@ -122,8 +122,17 @@ highlight:
   tab_replace:
 
 # Category & Tag
-default_category: uncategorized
+default_category: article
 category_map:
+  Java: java
+  Docker: docker
+  IELTS: IELTS
+  Golang: golang
+  Etcd: etcd
+  Scala: scala
+  Storm: storm
+  Database: database
+
 tag_map:
 home_posts_tag: true # show posts tags
 
