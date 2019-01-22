@@ -3,9 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Your Title
-subtitle: This is hexo theme
-author: John Doe
+title: Change YourSelf!
+subtitle: 
+author: Beauty Catty
 language:
 timezone:
 
@@ -24,7 +24,7 @@ email:
 description: ""
 keyword: ""
 header-img: img/header_img/home-bg-2-dark.png
-signature: true #show signature
+signature: false #show signature
 signature-img: img/signature/BeanTechSign-white.png 
 
 
