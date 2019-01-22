@@ -24,6 +24,7 @@ email:
 description: ""
 keyword: ""
 header-img: img/header_img/home-bg-2-dark.png
+404-img: /img/404.jpeg
 signature: false #show signature
 signature-img: img/signature/BeanTechSign-white.png 
 
@@ -32,13 +33,13 @@ signature-img: img/signature/BeanTechSign-white.png
 # RSS: false
 # weibo_username:     Demonbaneen
 # zhihu_username:     Demonbane
-github_username:    YenYuHsuan
+github_username:    bingyuhuang
 # twitter_username:   Demonbane_x
-facebook_username:  YenYuHsuan
-linkedin_username:  yu-hsuan-yen
+#facebook_username:  YenYuHsuan
+#linkedin_username:  yu-hsuan-yen
 
 # Build settings
-anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
+anchorjs: true                         # if you want to customize anchor. check out line:181 of `post.html`
 
 
 # Disqus settings
@@ -84,17 +85,8 @@ featured-condition-size: 1              # A tag will be featured if the size of 
 ## Friends
 friends: [
     {
-        title: "Bean Tech",
-        href: "http://beantech.org"
-    },{
-        title: "Kaijun's Blog",
-        href: "http://blog.kaijun.rocks"
-    },{
-        title: "Hux Blog",
-        href: "http://huangxuan.me"
-    },{
-        title: "It Helps SEO",
-        href: "#"
+        title: "sherlockblaze's Blog",
+        href: "https://sherlockblaze.com/"
     }
 ]
 
