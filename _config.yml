@@ -178,4 +178,15 @@ sitemap:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
+
+valine: true
+valineAppId: __VISITORS_APPID__ # your leancloud application appid
+valineAppKey: __VISITORS_APPKEY__ # your leancloud application appkey
+valineNotify: false # mail notifier , https://github.com/xCss/Valine/wiki
+valineVerify: true # Verification code
+valinePlaceHolder: Let us talk more!! # comment box placeholder
+valineAvatar: wavatar # gravatar style
+valineGuestInfo: nick,mail,link # custom comment header
+valinePageSize: 10 # pagination size
+visitor: true
   repository: https://__GITHUB_TOKEN__@github.com/bingyuhuang/bingyuhuang.github.io.git
