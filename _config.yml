@@ -178,7 +178,8 @@ sitemap:
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-
+  repository: https://__GITHUB_TOKEN__@github.com/bingyuhuang/bingyuhuang.github.io.git
+  
 valine: true
 valineAppId: __VISITORS_APPID__ # your leancloud application appid
 valineAppKey: __VISITORS_APPKEY__ # your leancloud application appkey
@@ -189,4 +190,4 @@ valineAvatar: wavatar # gravatar style
 valineGuestInfo: nick,mail,link # custom comment header
 valinePageSize: 10 # pagination size
 visitor: true
-repository: https://__GITHUB_TOKEN__@github.com/bingyuhuang/bingyuhuang.github.io.git
+  
