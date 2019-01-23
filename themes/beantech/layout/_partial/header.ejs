@@ -2,16 +2,7 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        <% if (is_home()) { %>
-            background-image: url('<%= config.root + config["header-img"] %>') 
-            /*config*/
-        <%} else if (is_post()){%>
-            background-image: url('<%= page["header-img"] %>')
-            /*post*/
-        <%} else {%>
-            background-image: url('<%= config.root + page["header-img"] %>')
-            /*page*/
-        <%} %>
+        background-image: url("https://source.unsplash.com/random/1280x720")
     }
     <% if (config.signature) {%>
     #signature{
