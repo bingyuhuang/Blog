@@ -179,6 +179,7 @@ sitemap:
 deploy:
   type: git
   repository: https://__GITHUB_TOKEN__@github.com/bingyuhuang/bingyuhuang.github.io.git
+  branch: master
   
 valine: true
 valineAppId: __VISITORS_APPID__ # your leancloud application appid
