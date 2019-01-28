@@ -22,7 +22,7 @@ tags:
 - JDK/JVM 是一组用于开发java应用程序的库和应用程序，其中包括了JRE
 - 使用下面一张图让我们了解java程序和scala程序和JVM的关系：
 
-![JVM和Scala程序](/source/img/resource/JVM.png)
+![JVM和Scala程序](JVM.png)
 
 #### 4.Scala特性
 
@@ -35,7 +35,7 @@ tags:
 - 依赖注入
 - 可扩展性
 - Scala生态系统
-![Scala生态系统](/source/img/resource/ecosystem.png)
+![Scala生态系统](ecosystem.png)
 - Java和Scala可混合使用
 
 **在以后使用scala的过程中，会对上述特性具体化**
@@ -54,7 +54,7 @@ tags:
     - 右击src->选择"Mark directory as"->"Sources Root"
     - project structure(快捷键 command + ；)->Gloabl Libraries: new Gloabl Libraries->Scala SDK->选择创建时的版本2.11.8
 
-![Kind](/source/img/resource/kind.png)
+![Kind](kind.png)
 
 ##### a. 继承App特性
 ```java
@@ -84,7 +84,7 @@ object HelloWorld extends App {
 - Edit configurations->HelloWorldWithArguments->Program arguments->firstargument secondargument third argument
 - run "HelloWorldWithArguments"
 
-2. sbt介绍
+#### 2. sbt介绍
 - sbt [Scala build tool](https://www.scala-sbt.org/0.13/docs/index.html)：Scala的构建工具
 - 使用sbt引入外部库,以[Scala Logging library](https://github.com/lightbend/scala-logging)为例
     -  build.sbt文件添加：
