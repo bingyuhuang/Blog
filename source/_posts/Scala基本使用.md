@@ -56,13 +56,13 @@ tags:
 
 ![Kind](Scala基本使用/kind.png)
 
-##### a. 继承App特性
+**a. 继承App特性**
 ```java
 object HelloWorld extends App {
   println("Hello world from Scala")
 }
 ```
-##### b. 不继承App,则创建main函数
+**b. 不继承App,则创建main函数**
 ```java
     object HelloWorldMain {
         def main(args: Array[String]): Unit={
@@ -71,7 +71,8 @@ object HelloWorld extends App {
     }
 ```
 **查看App特性，发现其中包括了main函数**
-##### c.main函数传入参数：
+
+**c.main函数传入参数：**
 ```java
     object HelloWorldWithArguments {
         def main(args: Array[String]): Unit={
