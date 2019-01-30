@@ -21,6 +21,7 @@ tags:
 
 #### etcd基本使用 (基于版本3.3.11)
 ##### etcd安装和启动
+- Go语言开发环境
 - 选择合适的[发行版本](https://github.com/etcd-io/etcd/releases)下载
 - 将解压文件夹下的etcd和etcdctl移动到'/usr/local/bin/'路径下
 - 终端执行$etcd
@@ -45,7 +46,7 @@ tags:
     $goreman -f Procfile start
 ```
 
-ps:我根据官网提示执行goreman命令，但是总是不能成功，最后开了三个终端，均在etcd的目录下面，分别执行Procfile文件的三条命令才成功,
+ps:我根据官网提示执行goreman命令，总是不能成功，最后开了三个终端，均在etcd的目录下面，分别执行Procfile文件的三条命令才成功,但是就无法使用goreman管理集群了，最后一次尝试$goreman -f Procfile start,成功了~
 ```
 查看集群成员 :
     $etcdctl member list
@@ -53,11 +54,12 @@ ps:我根据官网提示执行goreman命令，但是总是不能成功，最�
     $ETCDCTL_API=3 etcdctl -w table endpoint status --cluster
 ```
 ![创建集群成功](ETCD入门/cluster.png)
-- 和集群进行交互：
+- 测试集群设置成功：
 ```
     $etcdctl set foo bar
     OK
-    $etcdctl get foo
-    bar
 ```
+
+##### 同集群进行交互
+
 
