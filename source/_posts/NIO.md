@@ -1,10 +1,12 @@
 ---
 title: NIO概述
+catalog: true
+toc_nav_num: true
 header-img: img/home-bg.jpg
 date: 2019-03-23 20:16:40
 description: 学习nio的笔记，hope for better
 tags:
-- etcd
+- NIO
 ---
 ## 一、NIO基本概述
 
@@ -75,6 +77,7 @@ Selector允许单线程处理多个Channel,适用于多个连接，但每个连�
 - 通道中的数据总是要先读到一个Buffer，或者总是要从一个Buffer中写入。
 
 ### 1 FileChannel
+#### 1.1 FileChannel基本用法
 连接文件的通道，以此读写文件，运行在阻塞模式下；
 
 ```
@@ -114,6 +117,34 @@ public static void main(String[] args) {
     }
 }
 ```
+
+#### 1.2 通道之间传输数据
+如果两个通道之间有一个是FileChannel,可以直接将一个通道的数据传递到另一通道
+
+- transferFrom()，将数据从源通道传输到FileChannel中，
+- transferTo(), 将数据从fileChannel传输到其他channel中：
+```
+public static void main(String[] args) {
+    try {
+        
+        RandomAccessFile fromFile = new RandomAccessFile("fromFlie.txt", "rw");
+        FileChannel fromChannel = fromFile.getChannel();
+        RandomAccessFile toFile = new RandomAccessFile("toFile.txt", "rw");
+        FileChannel toChannel = toFile.getChannnel();
+        long position = 0 ;
+        long count = fromChannel。size();
+        // transferFrom() 入参position 表示从position处开始向目标文件写数据，coun表示最多传输的字节数。
+        toChannel.transfrom(position, count, fromChannel); // fromChannel可以为其他非FileChannel
+        // transferTo()
+        fromChannel.transferTo(position, count, toChannel);// toChannel可以为其他非FileChannel
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+```
+
 ### 2 SocketChannel
 
 SocketChannel一个连接到TCP网络套接字的通道,创建SocketChannel的两种方式：
@@ -325,3 +356,245 @@ public static void main(String[] args) {
 }
 
 ```
+
+## 三、Buffer
+### 1.基本用法分
+#### 1.1 读写数据四步：
+- a.写入数据到Buffer
+- b.调用flip()方法
+- c.从Buffer中读取数据
+- d.调用clear()方法或者compact()方法
+
+#### 1.2 读写过程：
+- a.向buffer写入多少数据，就会记录下多少数据。
+- b.要读取数据，通过flip()方法将Buffer从写模式切换到读模式。
+- c.在读模式下，可以读取之前写入到buffer的所有数据。
+- d.读完数据，清空缓冲区，让它可以再次被写入。有两种方式能清空缓冲区：调用clear()或compact()方法。
+- e.使用clear()方法会清空整个缓冲区的数据。compact()方法只会清除已经读过的数据。任何未读的数据都被移到缓冲区的起始处，新写入的数据将放到缓冲区未读数据的后面。
+
+
+### 2 Buffer的三个属性Capacity、position、limit
+缓存区的本质是一块可以读写数据的内存，被包装成NIO Buffer 对象，用来方便的访问该块内存，其中三个属性，position和limit的含义取决于Buffer处在读模式还是写模式。不管Buffer处在什么模式，capacity的含义总是一样的
+![读写模式下的三个属性的值](NIO/buffer_porpertities.png)
+- capacity : Buffer固定大小，可以往其中写byte、long、char等类型，写满后需要清空(读取或清除数据)才可继续写。
+- position:写数据的时候是当前位置;切换成读数据的时候，position会被置为0，读取数据时，position向前移动到下一个可读的位置。
+- limit:写模式下，limit表示最多能往buffer里写多少数据，值等于capacity;读模式下，limit被设置为能读到之前写入的所有数据时的positon值。
+
+### 3 Buffer的方法
+#### 3.1 Buffer的分配
+使用各个Buffer类的allocate方法获得Buffer对象,参数为缓冲区的大小:
+```
+    ByteBuffer buffer  = ByteBuffer.allocate(48)；
+    CharBuffer buffer = CharBuffer.allocate(1024);
+```
+#### 3.2 向Buffer中写数据
+```
+    // 从Channel写到Buffer
+    int bytesRead = inChannel.read(buf);
+    // 通过Buffer的put()方法写到Buffer里。  
+    buf.put(127)
+```
+
+#### 3.4 切换Buffer由写模式到读模式
+```
+    buf.flip()
+    // 该方法的操作是：postion设为0，用于标记读的位置，limit设置为之前position的位置。limit表示之前写进了多少个byte、char等 —— 现在能读取多少个byte、char等
+```
+
+#### 3.5 从Buffer中读取数据
+```
+    // 从Buffer读取数据到Channel。
+    int bytesRead = inChannel.write(buf)
+    //使用get()方法从Buffer中读取数据。 
+    byte aByte = bug.get();
+```
+
+#### 3.6 重读Buffer所有数据
+```
+    Buffer.rewind()
+    // 该方法的操作：position设回0，limit保持不变，仍然表示能从Buffer中读取多少个元素
+```
+
+#### 3.7 清除数据
+```
+    buffer.clear();
+    //clear()方法，position将被设回0，limit被设置成 capacity的值,数据并未被清除，标记从哪里开始写数据，之前的数据被覆盖掉。
+    buffer.compact()
+    // compact()方法，将未读数据拷贝到Buffer起始处，position设置到最后一个未读数据正后面，limit属性被设置成 capacity的值
+```
+
+#### 3.8 标记和恢复position
+```
+    //mark()方法，可以标记Buffer中的一个特定position
+    buffer.mark()
+    // 通过调用reset恢复到这个position
+    buffer.reset()
+```
+
+#### 3.9 buffer比较方法
+*equal()*
+```
+    //只是比较Buffer的一部分，不是每一个在它里面的元素都比较。
+    buffer.equals();
+```
+它只比较Buffer中的从 position到limit之间的元素 :
+- 有相同的类型（byte、char、int等）。
+- Buffer中剩余的byte、char等的个数相等。
+- Buffer中所有剩余的byte、char等都相同。
+
+*compareTo()*
+```
+    //方法比较两个Buffer的从 position到limit之间的元素(byte、char等)
+    buffer.compareTo()
+```
+如果满足下列条件，则认为一个Buffer“小于”另一个Buffer：
+- 第一个不相等的元素小于另一个Buffer中对应的元素 。
+- 所有元素都相等，但第一个Buffer比另一个先耗尽(第一个Buffer的元素个数比另一个少)
+
+### 4.Scatter/Gather (分散和聚集)
+学习了通道和缓冲区的知识，下面介绍两个描述通道读写的操作。假设一种场景，需要将数据分散处理，如果传递消息头和消息体的数据，就需要分散到不同的buffer,便于读取；聚散是分散的逆过程，组合传递的消息进行发送；
+
+*Scatter*
+    分散（Scattering reads）:读取channel的数据写入到多个buffer中，如图
+
+![scatter](NIO/scatter.png)
+
+示例：
+ ```
+    ByteBuffer head = ByteBuffer.allocate(128);
+    ByteBuffer body  = ByteBuffer.allocate(1024);
+    ByteBuffer[] bufferArray = {head, body};// 将buffer插入buffer数组
+    channel.read(bufferArray); // 多个buffer作为read方法的输入参数
+```   
+ps:
+- read()方法会按照buffer在数组中的顺序从channel中写入数据到buffer，一个buffer写满才会写另一个
+- 如上述代码，消息头必须固定为128,移动下一个buffer前，必须填满当前的buffer，这也意味着它不适用于动态消息
+
+*Gather*
+    （聚集 gathing writes）将多个Buffer的数据写入到同一个Channel中,如图：
+
+![scatter](NIO/gather.png)
+示例：
+```
+    ByteBuffer head = ByteBuffer.allocate(128);
+    ByteBuffer body  = ByteBuffer.allocate(1024);
+    ByteBuffer[] bufferArray = {head, body};// 将buffer插入数据
+    channel.write(bufferArray); // 多个buffer作为read方法的输入参数
+```
+ps:
+- write()方法按照buffer在数组中的顺序写入到channel
+- 只有position和limit的数据才会被写入,如果一个buffer的容量为128byte，但是仅仅包含58byte的数据，那么这58byte的数据将被写入到channel中
+- gathering writes能较好处理动态消息
+
+## 四.Pipe
+NIO管道是两个数据之间的单向数据连接。Pipe有一个Sink通道往Pipe写数据，一个Source通道，从Pipe读数据。原理图：
+![pipe](NIO/pipe.png)
+
+*pipe使用示例*
+```
+    // 创建管道
+    Pipe pipe = Pipe.open();
+    // 向管道写数据：SinkChannel的write()方法
+    Pipe.SinkChannle sinkChannel = pipe.sink();
+    String newData = "New String to Write to file..." + System.currentTimeMills();
+    ByteBuffer buf =  ByteBuffer.allocate(48);
+    buf.clear();
+    buf.put(newData.getBytes());
+    buf.flip();
+    while(buf.hasRemaining()) {
+    sinkChannel.write(buf);
+    }
+    // 从管道读数据：SourceChannel的read()方法
+    Pipe.SourceChannel spurceChannel = pipe.source();
+    ByteBuffer buf = ByteBuffer.allocate(48);
+    int bytedsRead = sourceChannel.read(buf); //bytedsRead 值表示多少字节被读入缓冲区；
+```
+
+## 五、Selector
+*selector* 是检查NIO通道是否准备好进行读写事件的组件，这样，一个单独的线程可以管理多个channel,从而管理多个网络连接。（在这里，只要知道使用Selector能够处理多个通道）
+
+### 1.为什么使用seletor
+可以单线程处理所有的通道，以减少线程之间上下文切换的开销，减少占用的系统资源(如内存)。
+
+### 2.怎么使用seletor
+#### 2.1 示例
+```
+    // Selector创建
+    Selector selector = Selector.open();
+    // 向Selector注册通道
+    channel.configureBlocking(false);	// 设置非阻塞模式同Selector一起使用的，channel不能为非阻塞模式，FileChannel不能切换成非阻塞模式，不能同Selector一起使用
+    SelectionKey key = channel.register(selector, SelectionKey.OP_READ); // register 方法的第二个参数是监听的事件类型(Connect、Accept、Read、Write)的insterest集合
+    // 选择通道
+    selector.select()//返回调用前就绪了的通道
+    // 线程调用select()方法后若没有通道就绪就一直阻塞
+    selector.wakeUp() //阻塞的线程就会返回；如果当前无线程阻塞，下一个调用select()方法的线程会立即返回；
+    // 关闭Selector
+    selector.close();
+```
+
+#### 2.2 SelectionKey
+调用channel.register() 向Selector注册通道，返回的SelctionKey对象，其中包括了一些你感兴趣的属性：interest 集合、ready 集合、可选的 附加对象
+
+*SelectionKey的操作*
+```
+    // 使用selectionKey访问channel & selctor
+    Channel channel = selectionKey.channel();
+    Selector selector  = seelctorKey.selector();
+    // 移除selectedKeys实例
+    Set selectedKeys = selector.selectKeys()
+    Iterato keyIterator = selectedKeys.iterator();
+    keyIterator.remove(); 
+```
+
+#### 2.3 interest 集合
+
+selector设置检测interest的事件，一旦通道触发了事件，表示该事件就绪，Connect、Accept、Read、Write，四个事件分别用四个常量来表示：
+- SelectionKey.OP_CONNECTION
+- SelectionKey.OP_ACCEPT
+- SelectionKey.OP_READ
+- SelectionKey.OP_WRITE
+
+如果对不止一件事情感兴趣，使用“位或”操作符将常量连接起来,如：
+```
+    int interestSet = SelectionKey.OP_READ | SelectionKey.OP_WRITE
+```
+
+如何知道selector监听的interest的事件
+```
+    // 通过“位于”操作interestSet集合和SelectionKey常量，可以确定某个事件是否在interestSet中
+    int interestSet  = selectionKey.interestOps();
+    boolean isInterestInAccept = (interestSet & SelectionKey.OP_CONNECTION) == SelectionKey.OP_CONNECTION;
+    boolean isInterestInConnect = (interestSet & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT;
+    boolean isInterestInRead = interestSet & SelectionKey.OP_READ == SelectionKey.OP_ACCEPT;
+    boolean isInterestInWrite = interestSet & SelctionKey.OP_WRITE == SelectionKey.OP_ACCEPT;
+```
+
+#### 2.4 ready 集合
+ready集合是已经准备就绪的操作的集合
+```
+    // 访问ready集合的方式
+    int readySet = selectionKey.readyOps();
+```
+检测通道就绪的事件：
+- selectionKey.isAcceptable();
+- selectionKey.isConnectable();
+- selectionKey.isReadabe();
+- selectionKey.isWritable();
+
+#### 2.5 可选的附加对象
+```
+    // 将一个对象或者更多信息附着到SelectionKey上，这样就能方便的识别某个给定的通道:
+    selectionKey.attach(theObject);
+    Object attachObj = selectionKey.attachment();
+
+    // 可以在注册的时候附加对象：
+    SelectionKey key = channel.register(selector, SelectionKey.OP_READ, theObject);
+```
+
+
+
+
+
+
+
+
