@@ -122,17 +122,17 @@ highlight:
   tab_replace:
 
 # Category & Tag
-default_category: uncategorized
+default_category: article
 category_map:
   Java: java
   Docker: docker
-  IELTS: IELTS
   Golang: golang
   Etcd: etcd
   Scala: scala
+  NIO: nio
   Storm: storm
   Database: database
-  Nio: nio
+  
 
 tag_map:
 home_posts_tag: true # show posts tags
