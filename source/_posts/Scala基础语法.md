@@ -5,7 +5,7 @@ date: 2019-03-28 12:33:15
 description:
 catalog: true
 tags:
-- Scala
+- scala
 ---
 
 ### 一、基础语法
@@ -110,9 +110,30 @@ List只能包含相同数据类型的数据，Tuples可以包含不同类型，�
 - 面向函数的编程语言的一个特点是，调用某个方法不应该有任何副作用，参数一定，调用该方法后，返回一定的结果，而不会去修改程序的其它状态（副作用）。这样做的一个好处是方法和方法之间关联性较小，从而方法变得更可靠和重用性高。使用这个原则也就意味着**需要把变量设成不可修改的val类型**，这也就避免了多线程访问的互锁问题
 
 - var类型是传统的指令式编程，如果一段代码中只有val类型变量，很有可能就是函数式代码(函数式编程关键就是不使用vars编写代码)
+```
+    // 输出数组和传统指令式编程
+    def printArgs(args: Array[String]):Unit= {
+        var i = 0
+        while(i<args.length>) {
+            print(args(i))
+            i += 1
+        }
+    }
+    // 函数式编程的两种方式
+    def printArgs1(args: Array[String]):Unit= {
+        for(arg: args)
+            println(arg)
+    }
 
-#### 9.读取文件
+    def printArgs2(args: Array[String]):Unit= {
+        args.foreach(println)
+    }
+```
 
+#### 9.读文件
+```
+    // Scaa
+```
 ### 二、类和对象
 #### 1.类和对象的定义
 

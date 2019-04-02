@@ -130,6 +130,7 @@ category_map:
   Golang: golang
   Etcd: etcd
   Scala: scala
+  Nio:nio
   Storm: storm
   Database: database
 
