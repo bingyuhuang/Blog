@@ -44,15 +44,15 @@ tags:
 ```
     $./build
     $goreman -f Procfile start
+    #查看集群成员 :
+    $etcdctl member list
+    #查看集群成员状态：
+    $ETCDCTL_API=3 etcdctl -w table endpoint status --cluster
+
 ```
 
 ps:我根据官网提示执行goreman命令，总是不能成功，最后开了三个终端，均在etcd的目录下面，分别执行Procfile文件的三条命令才成功,但是就无法使用goreman管理集群了，最后一次尝试$goreman -f Procfile start,成功了~
-```
-查看集群成员 :
-    $etcdctl member list
-查看集群成员状态：
-    $ETCDCTL_API=3 etcdctl -w table endpoint status --cluster
-```
+
 ![创建集群成功](ETCD入门/cluster.png)
 - 测试集群设置成功：
 ```
@@ -60,6 +60,5 @@ ps:我根据官网提示执行goreman命令，总是不能成功，最后开�
     OK
 ```
 
-##### 同集群进行交互
 
 
